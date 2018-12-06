@@ -15,22 +15,27 @@ class LaunchScreen extends Component {
     super(props);
     this.state = {
       text: 'Initial state',
-      id: 1
     };
   }
 
   _onPressButton() {
-    this.props.addAnimal(this.state.id, 'A')
+    this.props.addAnimal('A')
     this.setState({
       text: 'Button Pressed',
-      id: this.state.id + 1
     });
+  }
+
+  _onRemove(id) {
+    this.props.removeAnimal(id)
+  }
+
+  _onReset() {
+    this.props.reset()
   }
 
   render () {
     return (
       <View style={styles.mainContainer}>
-        <Image source={Images.background} style={styles.backgroundImage} resizeMode='stretch' />
         <ScrollView style={styles.container}>
           <View style={styles.section} >
             <Text style={styles.sectionText}>
@@ -38,19 +43,36 @@ class LaunchScreen extends Component {
             </Text>
 
             <Text style={styles.sectionText}>
+              State: { JSON.stringify(this.props.database) }
+            </Text>
+
+            <Text style={styles.sectionText}>
               State: { this.props.database.test }
             </Text>
 
             {Object.values(this.props.database.animals).map((animal) =>
-              <Text key={animal.id} style={styles.sectionText}>
-                {animal.id}: { animal.name }
-              </Text>
+              <View key={animal.id}>
+                <Text style={styles.sectionText}>
+                  {animal.id}: { animal.name }
+                </Text>
 
+                <Button
+                  onPress={() => this._onRemove(animal.id)}
+                  title="Remove"
+                  color="#841584"
+                />
+              </View>
             )}
 
             <Button
               onPress={() => this._onPressButton()}
-              title="Click here"
+              title="Add"
+            />
+
+            <Button
+              onPress={() => this._onReset()}
+              title="Reset"
+              color="red"
             />
           </View>
         </ScrollView>

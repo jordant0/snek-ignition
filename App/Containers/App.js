@@ -6,6 +6,9 @@ import RootContainer from './RootContainer'
 import createStore from '../Redux'
 import reducer from '../Redux/index'
 
+import { YellowBox } from 'react-native'
+YellowBox.ignoreWarnings(['Remote debugger'])
+
 // create our store
 const store = createStore(reducer)
 
