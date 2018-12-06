@@ -1,4 +1,4 @@
-package com.testigniteexpo;
+package com.snekignition;
 
 import android.app.Application;
 

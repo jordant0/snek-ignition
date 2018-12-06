@@ -1,3 +1,3 @@
-rootProject.name = 'TestIgniteExpo'
+rootProject.name = 'SnekIgnition'
 
 include ':app'
