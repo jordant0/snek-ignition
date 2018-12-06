@@ -1,32 +1,74 @@
 import React, { Component } from 'react'
-import { ScrollView, Text, Image, View } from 'react-native'
+import { Alert, ScrollView, Text, Image, View, Button } from 'react-native'
 import DevscreensButton from '../../ignite/DevScreens/DevscreensButton.js'
-
+import { connect } from 'react-redux'
 import { Images } from '../Themes'
+import DatabaseActions from '../Redux/DatabaseRedux'
+import github from '../Redux/GithubRedux'
+import { bindActionCreators } from 'redux'
 
 // Styles
 import styles from './Styles/LaunchScreenStyles'
 
-export default class LaunchScreen extends Component {
+class LaunchScreen extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      text: 'Initial state',
+      id: 1
+    };
+  }
+
+  _onPressButton() {
+    this.props.addAnimal(this.state.id, 'A')
+    this.setState({
+      text: 'Button Pressed',
+      id: this.state.id + 1
+    });
+  }
+
   render () {
     return (
       <View style={styles.mainContainer}>
         <Image source={Images.background} style={styles.backgroundImage} resizeMode='stretch' />
         <ScrollView style={styles.container}>
-          <View style={styles.centered}>
-            <Image source={Images.launch} style={styles.logo} />
-          </View>
-
           <View style={styles.section} >
-            <Image source={Images.ready} />
             <Text style={styles.sectionText}>
-              This probably isn't what your app is going to look like. Unless your designer handed you this screen and, in that case, congrats! You're ready to ship. For everyone else, this is where you'll see a live preview of your fully functioning app using Ignite.
+              { this.state.text }
             </Text>
-          </View>
 
-          <DevscreensButton />
+            <Text style={styles.sectionText}>
+              State: { this.props.database.test }
+            </Text>
+
+            {Object.values(this.props.database.animals).map((animal) =>
+              <Text key={animal.id} style={styles.sectionText}>
+                {animal.id}: { animal.name }
+              </Text>
+
+            )}
+
+            <Button
+              onPress={() => this._onPressButton()}
+              title="Click here"
+            />
+          </View>
         </ScrollView>
       </View>
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  const { database } = state
+  return { database }
+};
+
+const mapDispatchToProps = dispatch => (
+  bindActionCreators(DatabaseActions, dispatch)
+);
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(LaunchScreen);
