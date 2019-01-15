@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Alert, ScrollView, Text, Image, View, Button, TouchableOpacity, TextInput } from 'react-native'
+import { ScrollView, Text, View, TouchableOpacity, TextInput, DatePickerAndroid } from 'react-native'
 import DevscreensButton from '../../ignite/DevScreens/DevscreensButton.js'
 import { connect } from 'react-redux'
 import { Images } from '../Themes'
@@ -13,13 +13,48 @@ import styles from './Styles/LaunchScreenStyles'
 class AddAnimalScreen extends Component {
   constructor(props) {
     super(props);
-    this.state = { text: '' };
+    let date = new Date();
+    this.state = {
+      name: '',
+      date: {
+        day: date.getDate(),
+        month: date.getMonth() + 1,
+        year: date.getYear() + 1900,
+      },
+    };
+  }
+
+  _onTextInput(name) {
+    this.setState({
+      ...this.state,
+      name: name,
+    })
   }
 
   _onAdd() {
-    if(this.state.text) {
-      this.props.addAnimal(this.state.text)
+    if(this.state.name) {
+      this.props.addAnimal(this.state.name, this.state.date)
       this.props.navigation.navigate('LaunchScreen')
+    }
+  }
+
+  async _openDatePicker() {
+    try {
+      const {action, year, month, day} = await DatePickerAndroid.open({
+        date: new Date(this.state.date.year, this.state.date.month - 1, this.state.date.day)
+      });
+      if (action !== DatePickerAndroid.dismissedAction) {
+        this.setState({
+          ...this.state,
+          date: {
+            day,
+            month: month + 1,
+            year,
+          },
+        })
+      }
+    } catch ({code, message}) {
+      console.warn('Cannot open date picker', message);
     }
   }
 
@@ -38,8 +73,16 @@ class AddAnimalScreen extends Component {
               placeholder='Enter Name'
               editable={true}
               maxLength={40}
-              onChangeText={(text) => this.setState({text})}
+              onChangeText={(name) => this._onTextInput(name)}
             />
+
+            <TouchableOpacity
+              onPress={() => this._openDatePicker()}
+            >
+              <Text>
+                Birthdate: { this.state.date.month }/{ this.state.date.day }/{ this.state.date.year }
+              </Text>
+            </TouchableOpacity>
           </View>
 
           <View style={styles.actionsFooter}>

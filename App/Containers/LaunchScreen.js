@@ -45,7 +45,7 @@ class LaunchScreen extends Component {
             {Object.values(this.props.database.animals).map((animal) =>
               <View key={animal.id}>
                 <Text style={styles.sectionText}>
-                  {animal.id}: { animal.name }
+                  {animal.id}: { animal.name } - { animal.birthdate.month }/{ animal.birthdate.day }/{ animal.birthdate.year }
                 </Text>
 
                 <Button
