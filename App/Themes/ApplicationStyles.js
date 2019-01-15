@@ -9,7 +9,7 @@ const ApplicationStyles = {
   screen: {
     mainContainer: {
       flex: 1,
-      backgroundColor: Colors.transparent
+      backgroundColor: Colors.background
     },
     backgroundImage: {
       position: 'absolute',
@@ -20,12 +20,15 @@ const ApplicationStyles = {
     },
     container: {
       flex: 1,
-      paddingTop: Metrics.baseMargin,
-      backgroundColor: Colors.transparent
+      margin: Metrics.section,
+      padding: Metrics.baseMargin,
+      backgroundColor: Colors.transparent,
+      justifyContent: 'space-between'
     },
     section: {
       margin: Metrics.section,
-      padding: Metrics.baseMargin
+      padding: Metrics.baseMargin,
+      flex: 1,
     },
     sectionText: {
       ...Fonts.style.normal,
@@ -40,11 +43,35 @@ const ApplicationStyles = {
       marginBottom: Metrics.smallMargin,
       marginHorizontal: Metrics.smallMargin
     },
-    titleText: {
-      ...Fonts.style.h2,
-      fontSize: 14,
-      color: Colors.text
-    }
+    headerText: {
+      ...Fonts.style.h1,
+      color: Colors.text,
+      textAlign: 'center'
+    },
+    button: {
+      alignItems: 'center',
+      backgroundColor: Colors.button,
+      paddingVertical: Metrics.buttonPaddingY,
+      paddingHorizontal: Metrics.buttonPaddingX,
+    },
+    buttonText: {
+      ...Fonts.style.h5,
+      fontWeight: 'bold',
+      color: Colors.buttonText,
+    },
+    link: {
+      backgroundColor: Colors.snow,
+      paddingVertical: Metrics.buttonPaddingY,
+      paddingHorizontal: Metrics.buttonPaddingX,
+    },
+    LinkText: {
+      ...Fonts.style.h5,
+      color: Colors.gray,
+    },
+    actionsFooter: {
+      flexDirection: 'row',
+      justifyContent: 'space-between'
+    },
   },
   darkLabelContainer: {
     padding: Metrics.smallMargin,

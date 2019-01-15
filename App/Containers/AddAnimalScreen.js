@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Alert, ScrollView, Text, Image, View, Button, TouchableOpacity } from 'react-native'
+import { Alert, ScrollView, Text, Image, View, Button, TouchableOpacity, TextInput } from 'react-native'
 import DevscreensButton from '../../ignite/DevScreens/DevscreensButton.js'
 import { connect } from 'react-redux'
 import { Images } from '../Themes'
@@ -10,27 +10,17 @@ import { bindActionCreators } from 'redux'
 // Styles
 import styles from './Styles/LaunchScreenStyles'
 
-class LaunchScreen extends Component {
+class AddAnimalScreen extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      text: 'Initial state',
-    };
+    this.state = { text: '' };
   }
 
-  _onPressButton() {
-    this.props.addAnimal('A')
-    this.setState({
-      text: 'Button Pressed',
-    });
-  }
-
-  _onRemove(id) {
-    this.props.removeAnimal(id)
-  }
-
-  _onReset() {
-    this.props.reset()
+  _onAdd() {
+    if(this.state.text) {
+      this.props.addAnimal(this.state.text)
+      this.props.navigation.navigate('LaunchScreen')
+    }
   }
 
   render () {
@@ -39,40 +29,35 @@ class LaunchScreen extends Component {
         <ScrollView contentContainerStyle={styles.container}>
           <View>
             <Text style={styles.headerText}>
-              Snek Ignition
+              Add Animal
             </Text>
 
-            {Object.values(this.props.database.animals).map((animal) =>
-              <View key={animal.id}>
-                <Text style={styles.sectionText}>
-                  {animal.id}: { animal.name }
-                </Text>
-
-                <Button
-                  onPress={() => this._onRemove(animal.id)}
-                  title="Remove"
-                  color="#841584"
-                />
-              </View>
-            )}
+            <TextInput
+              autoCapitalize='words'
+              autoFocus={true}
+              placeholder='Enter Name'
+              editable={true}
+              maxLength={40}
+              onChangeText={(text) => this.setState({text})}
+            />
           </View>
 
           <View style={styles.actionsFooter}>
             <TouchableOpacity
               style={styles.link}
-              onPress={() => this._onReset()}
+              onPress={() => this.props.navigation.navigate('LaunchScreen')}
             >
               <Text style={styles.LinkText}>
-                Reset
+                Return
               </Text>
             </TouchableOpacity>
 
             <TouchableOpacity
               style={styles.button}
-              onPress={() => this.props.navigation.navigate('AddAnimalScreen')}
+              onPress={() => this._onAdd()}
             >
               <Text style={styles.buttonText}>
-                Add Animal
+                Add
               </Text>
             </TouchableOpacity>
           </View>
@@ -94,4 +79,4 @@ const mapDispatchToProps = dispatch => (
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(LaunchScreen);
+)(AddAnimalScreen);
