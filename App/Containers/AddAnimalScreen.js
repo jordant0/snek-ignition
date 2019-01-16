@@ -1,5 +1,23 @@
 import React, { Component } from 'react'
-import { ScrollView, Text, View, TouchableOpacity, TextInput, DatePickerAndroid } from 'react-native'
+import {
+  Container,
+  Header,
+  Title,
+  Content,
+  Footer,
+  FooterTab,
+  Button,
+  Left,
+  Right,
+  Body,
+  Icon,
+  Text,
+  Form,
+  Item,
+  Label,
+  Input,
+  DatePicker,
+} from 'native-base'
 import DevscreensButton from '../../ignite/DevScreens/DevscreensButton.js'
 import { connect } from 'react-redux'
 import { Images } from '../Themes'
@@ -16,11 +34,7 @@ class AddAnimalScreen extends Component {
     let date = new Date();
     this.state = {
       name: '',
-      date: {
-        day: date.getDate(),
-        month: date.getMonth() + 1,
-        year: date.getYear() + 1900,
-      },
+      date: new Date(),
     };
   }
 
@@ -38,74 +52,59 @@ class AddAnimalScreen extends Component {
     }
   }
 
-  async _openDatePicker() {
-    try {
-      const {action, year, month, day} = await DatePickerAndroid.open({
-        date: new Date(this.state.date.year, this.state.date.month - 1, this.state.date.day)
-      });
-      if (action !== DatePickerAndroid.dismissedAction) {
-        this.setState({
-          ...this.state,
-          date: {
-            day,
-            month: month + 1,
-            year,
-          },
-        })
-      }
-    } catch ({code, message}) {
-      console.warn('Cannot open date picker', message);
-    }
+  _onDateChange(newDate) {
+    this.setState({
+      ...this.state,
+      date: newDate,
+    })
   }
 
   render () {
     return (
-      <View style={styles.mainContainer}>
-        <ScrollView contentContainerStyle={styles.container}>
-          <View>
-            <Text style={styles.headerText}>
-              Add Animal
-            </Text>
-
-            <TextInput
-              autoCapitalize='words'
-              autoFocus={true}
-              placeholder='Enter Name'
-              editable={true}
-              maxLength={40}
-              onChangeText={(name) => this._onTextInput(name)}
-            />
-
-            <TouchableOpacity
-              onPress={() => this._openDatePicker()}
-            >
-              <Text>
-                Birthdate: { this.state.date.month }/{ this.state.date.day }/{ this.state.date.year }
-              </Text>
-            </TouchableOpacity>
-          </View>
-
-          <View style={styles.actionsFooter}>
-            <TouchableOpacity
-              style={styles.link}
-              onPress={() => this.props.navigation.navigate('LaunchScreen')}
-            >
-              <Text style={styles.LinkText}>
-                Return
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => this._onAdd()}
-            >
-              <Text style={styles.buttonText}>
-                Add
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-      </View>
+      <Container>
+        <Header>
+          <Left>
+            <Button transparent onPress={() => this.props.navigation.navigate('LaunchScreen')}>
+              <Icon name='arrow-back' />
+            </Button>
+          </Left>
+          <Body>
+            <Title>Add Animal</Title>
+          </Body>
+          <Right />
+        </Header>
+        <Content>
+          <Form>
+            <Item>
+              <Label>Name</Label>
+              <Input
+                autoCapitalize='words'
+                maxLength={40}
+                onChangeText={(name) => this._onTextInput(name)}
+              />
+            </Item>
+            <Item>
+              <Label>Birthdate</Label>
+              <DatePicker
+                defaultDate={this.state.date}
+                locale={"en"}
+                modalTransparent={false}
+                animationType={"fade"}
+                androidMode={"default"}
+                placeHolderText="Select date"
+                onDateChange={(date) => this._onDateChange(date)}
+              />
+            </Item>
+          </Form>
+        </Content>
+        <Footer>
+          <FooterTab>
+            <Button full active onPress={() => this._onAdd()}>
+              <Text>Add</Text>
+            </Button>
+          </FooterTab>
+        </Footer>
+      </Container>
     )
   }
 }

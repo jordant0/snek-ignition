@@ -1,5 +1,20 @@
 import React, { Component } from 'react'
-import { Alert, ScrollView, Text, Image, View, Button, TouchableOpacity } from 'react-native'
+import {
+  Container,
+  Header,
+  Title,
+  Content,
+  Footer,
+  FooterTab,
+  Button,
+  Left,
+  Right,
+  Body,
+  Icon,
+  Text,
+  List,
+  ListItem,
+} from 'native-base'
 import DevscreensButton from '../../ignite/DevScreens/DevscreensButton.js'
 import { connect } from 'react-redux'
 import { Images } from '../Themes'
@@ -33,51 +48,56 @@ class LaunchScreen extends Component {
     this.props.reset()
   }
 
+  _birthdateDisplay(animal) {
+    if(animal.birthdate) {
+      return new Date(animal.birthdate.year, animal.birthdate.month, animal.birthdate.day).toDateString()
+    } else {
+      return '';
+    }
+  }
+
   render () {
     return (
-      <View style={styles.mainContainer}>
-        <ScrollView contentContainerStyle={styles.container}>
-          <View>
-            <Text style={styles.headerText}>
-              Snek Ignition
-            </Text>
-
+      <Container>
+        <Header>
+          <Left />
+          <Body>
+            <Title>Snek Ignition</Title>
+          </Body>
+          <Right>
+            <Button transparent onPress={() => this._onReset()}>
+              <Icon name='sync' />
+            </Button>
+          </Right>
+        </Header>
+        <Content>
+          <List>
             {Object.values(this.props.database.animals).map((animal) =>
-              <View key={animal.id}>
-                <Text style={styles.sectionText}>
-                  {animal.id}: { animal.name } - { animal.birthdate.month }/{ animal.birthdate.day }/{ animal.birthdate.year }
-                </Text>
+              <ListItem key={animal.id}>
+                <Left>
+                  <Text style={styles.sectionText}>
+                    {animal.id}: { animal.name } - { this._birthdateDisplay(animal) }
+                  </Text>
+                </Left>
 
-                <Button
-                  onPress={() => this._onRemove(animal.id)}
-                  title="Remove"
-                  color="#841584"
-                />
-              </View>
+                <Right>
+                  <Button danger onPress={() => this._onRemove(animal.id)}
+                  >
+                    <Text>Remove</Text>
+                  </Button>
+                </Right>
+              </ListItem>
             )}
-          </View>
-
-          <View style={styles.actionsFooter}>
-            <TouchableOpacity
-              style={styles.link}
-              onPress={() => this._onReset()}
-            >
-              <Text style={styles.LinkText}>
-                Reset
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => this.props.navigation.navigate('AddAnimalScreen')}
-            >
-              <Text style={styles.buttonText}>
-                Add Animal
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-      </View>
+          </List>
+        </Content>
+        <Footer>
+          <FooterTab>
+            <Button full active onPress={() => this.props.navigation.navigate('AddAnimalScreen')}>
+              <Text>Add Animal</Text>
+            </Button>
+          </FooterTab>
+        </Footer>
+      </Container>
     )
   }
 }

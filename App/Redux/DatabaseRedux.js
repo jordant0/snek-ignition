@@ -22,7 +22,7 @@ export const INITIAL_STATE = Immutable({
       name: 'Test',
       birthdate: {
         day: 1,
-        month: 1,
+        month: 0,
         year: 1960,
       }
     }
@@ -52,7 +52,11 @@ export const performAddAnimal = (state, { name, birthdate }) => {
   newAnimals[id] = {
     id: id,
     name: name,
-    birthdate: Object.assign({}, birthdate),
+    birthdate: {
+      day: birthdate.getDate(),
+      month: birthdate.getMonth(),
+      year: birthdate.getYear() + 1900
+    },
   }
 
   return {
