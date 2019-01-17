@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import { View, StatusBar } from 'react-native'
+import { StatusBar } from 'react-native'
+import { Root } from "native-base";
 import { connect } from 'react-redux'
 import StartupActions from '../Redux/StartupRedux'
 import ReduxPersist from '../Config/ReduxPersist'
@@ -18,10 +19,10 @@ class RootContainer extends Component {
 
   render () {
     return (
-      <View style={styles.applicationView}>
+      <Root>
         <StatusBar barStyle='light-content' />
         <AppNavigation />
-      </View>
+      </Root>
     )
   }
 }

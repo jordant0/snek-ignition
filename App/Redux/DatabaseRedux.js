@@ -21,7 +21,7 @@ export const INITIAL_STATE = Immutable({
       id: 0,
       name: 'Test',
       type: 'Unknown',
-      species: 'Unknown',
+      species: null,
       birthdate: {
         day: 1,
         month: 0,

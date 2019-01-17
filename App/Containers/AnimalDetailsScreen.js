@@ -12,12 +12,7 @@ import {
   Body,
   Icon,
   Text,
-  Form,
-  Item,
-  Label,
-  Input,
-  DatePicker,
-  Picker,
+  ActionSheet,
 } from 'native-base'
 import { connect } from 'react-redux'
 import DatabaseActions from '../Redux/DatabaseRedux'
@@ -25,6 +20,16 @@ import { bindActionCreators } from 'redux'
 
 // Styles
 import styles from './Styles/LaunchScreenStyles'
+
+var BUTTONS = [
+  'Feeding',
+  'Handling',
+  'Shedding',
+  'Other',
+  'Cancel',
+];
+
+var CANCEL_INDEX = 4;
 
 class AnimalDetailsScreen extends Component {
   constructor(props) {
@@ -36,6 +41,12 @@ class AnimalDetailsScreen extends Component {
       animalId,
       animal,
     };
+  }
+
+  _onNewEvent(eventIndex) {
+    if(eventIndex !== CANCEL_INDEX) {
+      alert(`Clicked ${BUTTONS[eventIndex]}`);
+    }
   }
 
   render () {
@@ -52,7 +63,26 @@ class AnimalDetailsScreen extends Component {
           </Body>
           <Right />
         </Header>
-        <Content />
+        <Content>
+          <Text>{ this.state.animal.type }</Text>
+        </Content>
+        <Footer>
+          <FooterTab>
+            <Button full active onPress={() =>
+              ActionSheet.show(
+                {
+                  options: BUTTONS,
+                  cancelButtonIndex: CANCEL_INDEX,
+                },
+                buttonIndex => {
+                  this._onNewEvent(buttonIndex);
+                }
+              )}
+            >
+              <Text>New Event</Text>
+            </Button>
+          </FooterTab>
+        </Footer>
       </Container>
     )
   }
