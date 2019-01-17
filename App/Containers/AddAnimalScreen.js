@@ -17,6 +17,7 @@ import {
   Label,
   Input,
   DatePicker,
+  Picker,
 } from 'native-base'
 import DevscreensButton from '../../ignite/DevScreens/DevscreensButton.js'
 import { connect } from 'react-redux'
@@ -35,19 +36,35 @@ class AddAnimalScreen extends Component {
     this.state = {
       name: '',
       date: new Date(),
+      type: 'Unknown',
+      species: 'Unknown',
     };
   }
 
-  _onTextInput(name) {
+  _onNameInput(text) {
     this.setState({
       ...this.state,
-      name: name,
+      name: text,
+    })
+  }
+
+  _onTypeChange(text) {
+    this.setState({
+      ...this.state,
+      type: text,
+    })
+  }
+
+  _onSpeciesInput(text) {
+    this.setState({
+      ...this.state,
+      species: text,
     })
   }
 
   _onAdd() {
     if(this.state.name) {
-      this.props.addAnimal(this.state.name, this.state.date)
+      this.props.addAnimal(this.state.name, this.state.date, this.state.type, this.state.species)
       this.props.navigation.navigate('LaunchScreen')
     }
   }
@@ -65,7 +82,7 @@ class AddAnimalScreen extends Component {
         <Header>
           <Left>
             <Button transparent onPress={() => this.props.navigation.navigate('LaunchScreen')}>
-              <Icon name='arrow-back' />
+              <Icon name='arrow-round-back' />
             </Button>
           </Left>
           <Body>
@@ -80,9 +97,10 @@ class AddAnimalScreen extends Component {
               <Input
                 autoCapitalize='words'
                 maxLength={40}
-                onChangeText={(name) => this._onTextInput(name)}
+                onChangeText={(name) => this._onNameInput(name)}
               />
             </Item>
+
             <Item>
               <Label>Birthdate</Label>
               <DatePicker
@@ -93,6 +111,32 @@ class AddAnimalScreen extends Component {
                 androidMode={"default"}
                 placeHolderText="Select date"
                 onDateChange={(date) => this._onDateChange(date)}
+              />
+            </Item>
+
+
+            <Item>
+              <Label>Type</Label>
+              <Picker
+                note
+                mode="dropdown"
+                selectedValue={this.state.type}
+                onValueChange={(type) => this._onTypeChange(type)}
+              >
+                <Picker.Item label="Unknown" value="Unknown" />
+                <Picker.Item label="Snake" value="Snake" />
+                <Picker.Item label="Lizard" value="Lizard" />
+                <Picker.Item label="Bird" value="Bird" />
+                <Picker.Item label="Fish" value="Fish" />
+              </Picker>
+            </Item>
+
+            <Item>
+              <Label>Species</Label>
+              <Input
+                autoCapitalize='words'
+                maxLength={160}
+                onChangeText={(text) => this._onSpeciesInput(text)}
               />
             </Item>
           </Form>

@@ -60,20 +60,22 @@ class LaunchScreen extends Component {
     return (
       <Container>
         <Header>
-          <Left />
+          <Left>
+            <Icon name='analytics' style={{color: 'white'}} />
+          </Left>
           <Body>
             <Title>Snek Ignition</Title>
           </Body>
           <Right>
             <Button transparent onPress={() => this._onReset()}>
-              <Icon name='sync' />
+              <Icon name='warning' />
             </Button>
           </Right>
         </Header>
         <Content>
           <List>
             {Object.values(this.props.database.animals).map((animal) =>
-              <ListItem key={animal.id}>
+              <ListItem key={animal.id} onPress={() => alert('Click animal')}>
                 <Left>
                   <Text style={styles.sectionText}>
                     {animal.id}: { animal.name } - { this._birthdateDisplay(animal) }
@@ -81,9 +83,8 @@ class LaunchScreen extends Component {
                 </Left>
 
                 <Right>
-                  <Button danger onPress={() => this._onRemove(animal.id)}
-                  >
-                    <Text>Remove</Text>
+                  <Button danger onPress={() => this._onRemove(animal.id)}>
+                    <Icon name='close' />
                   </Button>
                 </Right>
               </ListItem>

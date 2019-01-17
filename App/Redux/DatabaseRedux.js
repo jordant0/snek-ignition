@@ -5,7 +5,7 @@ import Immutable from 'seamless-immutable'
 
 const { Types, Creators } = createActions({
   reset: null,
-  addAnimal: ['name', 'birthdate'],
+  addAnimal: ['name', 'birthdate', 'type', 'species'],
   updateAnimal: ['id', 'newName'],
   removeAnimal: ['id']
 })
@@ -20,11 +20,13 @@ export const INITIAL_STATE = Immutable({
     0: {
       id: 0,
       name: 'Test',
+      type: 'Unknown',
+      species: 'Unknown',
       birthdate: {
         day: 1,
         month: 0,
         year: 1960,
-      }
+      },
     }
   },
   nextAnimalId: 1,
@@ -45,13 +47,15 @@ export const performReset = (state) => {
 }
 
 // Add a new animal
-export const performAddAnimal = (state, { name, birthdate }) => {
+export const performAddAnimal = (state, { name, birthdate, type, species }) => {
   let newAnimals = Object.assign({}, state.animals),
       id = state.nextAnimalId
 
   newAnimals[id] = {
-    id: id,
-    name: name,
+    id,
+    name,
+    type,
+    species,
     birthdate: {
       day: birthdate.getDate(),
       month: birthdate.getMonth(),
