@@ -19,11 +19,8 @@ import {
   DatePicker,
   Picker,
 } from 'native-base'
-import DevscreensButton from '../../ignite/DevScreens/DevscreensButton.js'
 import { connect } from 'react-redux'
-import { Images } from '../Themes'
 import DatabaseActions from '../Redux/DatabaseRedux'
-import github from '../Redux/GithubRedux'
 import { bindActionCreators } from 'redux'
 
 // Styles
@@ -64,7 +61,7 @@ class AddAnimalScreen extends Component {
 
   _onAdd() {
     if(this.state.name) {
-      this.props.addAnimal(this.state.name, this.state.date, this.state.type, this.state.species)
+      this.props.addAnimal(this.state)
       this.props.navigation.navigate('LaunchScreen')
     }
   }
@@ -113,7 +110,6 @@ class AddAnimalScreen extends Component {
                 onDateChange={(date) => this._onDateChange(date)}
               />
             </Item>
-
 
             <Item>
               <Label>Type</Label>

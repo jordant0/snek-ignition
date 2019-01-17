@@ -15,31 +15,14 @@ import {
   List,
   ListItem,
 } from 'native-base'
-import DevscreensButton from '../../ignite/DevScreens/DevscreensButton.js'
 import { connect } from 'react-redux'
-import { Images } from '../Themes'
 import DatabaseActions from '../Redux/DatabaseRedux'
-import github from '../Redux/GithubRedux'
 import { bindActionCreators } from 'redux'
 
 // Styles
 import styles from './Styles/LaunchScreenStyles'
 
 class LaunchScreen extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      text: 'Initial state',
-    };
-  }
-
-  _onPressButton() {
-    this.props.addAnimal('A')
-    this.setState({
-      text: 'Button Pressed',
-    });
-  }
-
   _onRemove(id) {
     this.props.removeAnimal(id)
   }
@@ -75,7 +58,7 @@ class LaunchScreen extends Component {
         <Content>
           <List>
             {Object.values(this.props.database.animals).map((animal) =>
-              <ListItem key={animal.id} onPress={() => alert('Click animal')}>
+              <ListItem key={animal.id} onPress={() => this.props.navigation.navigate('AnimalDetailsScreen', { id: animal.id })}>
                 <Left>
                   <Text style={styles.sectionText}>
                     {animal.id}: { animal.name } - { this._birthdateDisplay(animal) }

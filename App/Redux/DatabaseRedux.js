@@ -5,7 +5,7 @@ import Immutable from 'seamless-immutable'
 
 const { Types, Creators } = createActions({
   reset: null,
-  addAnimal: ['name', 'birthdate', 'type', 'species'],
+  addAnimal: ['animalData'],
   updateAnimal: ['id', 'newName'],
   removeAnimal: ['id']
 })
@@ -30,7 +30,8 @@ export const INITIAL_STATE = Immutable({
     }
   },
   nextAnimalId: 1,
-  test: 'Test text'
+  test: 'Test text',
+  events: [],
 })
 
 /* ------------- Selectors ------------- */
@@ -47,46 +48,55 @@ export const performReset = (state) => {
 }
 
 // Add a new animal
-export const performAddAnimal = (state, { name, birthdate, type, species }) => {
-  let newAnimals = Object.assign({}, state.animals),
-      id = state.nextAnimalId
+export const performAddAnimal = (state, { animalData }) => {
+  let newList = Object.assign({}, state.animals),
+      id = state.nextAnimalId,
+      newAnimal;
 
-  newAnimals[id] = {
-    id,
-    name,
-    type,
-    species,
-    birthdate: {
-      day: birthdate.getDate(),
-      month: birthdate.getMonth(),
-      year: birthdate.getYear() + 1900
-    },
+  newAnimal = {
+    id: id,
+    name: animalData.name,
+    type: animalData.type,
+    species: animalData.species,
   }
+
+  if(animalData.date) {
+    newAnimal.birthdate = {
+      day: animalData.date.getDate(),
+      month: animalData.date.getMonth(),
+      year: animalData.date.getYear() + 1900
+    }
+  }
+  else {
+    newAnimal.birthdate = {}
+  }
+
+  newList[id] = newAnimal;
 
   return {
     ...state,
     nextAnimalId: id + 1,
-    animals: newAnimals
+    animals: newList
   }
 }
 
 // Update animal
 export const performUpdateAnimal = (state, { id, newName }) => {
-  let newAnimals = Object.assign({}, state.animals)
+  let newList = Object.assign({}, state.animals)
   state.animals[id] = { id: id, name: newName }
   return {
     ...state,
-    animals: newAnimals
+    animals: newList
   }
 }
 
 // Remove animal
 export const performRemoveAnimal = (state, { id }) => {
-  let newAnimals = Object.assign({}, state.animals)
-  delete newAnimals[id]
+  let newList = Object.assign({}, state.animals)
+  delete newList[id]
   return {
     ...state,
-    animals: newAnimals
+    animals: newList
   }
 }
 

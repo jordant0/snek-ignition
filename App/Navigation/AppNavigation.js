@@ -1,6 +1,7 @@
 import { createStackNavigator } from 'react-navigation'
 import LaunchScreen from '../Containers/LaunchScreen'
 import AddAnimalScreen from '../Containers/AddAnimalScreen'
+import AnimalDetailsScreen from '../Containers/AnimalDetailsScreen'
 
 import styles from './Styles/NavigationStyles'
 
@@ -8,6 +9,7 @@ import styles from './Styles/NavigationStyles'
 const PrimaryNav = createStackNavigator({
   LaunchScreen: { screen: LaunchScreen },
   AddAnimalScreen: { screen: AddAnimalScreen },
+  AnimalDetailsScreen: { screen: AnimalDetailsScreen },
 }, {
   // Default config for all screens
   headerMode: 'none',
