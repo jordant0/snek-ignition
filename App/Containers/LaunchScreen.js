@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { ListView } from 'react-native';
 import {
   Container,
   Header,
@@ -23,6 +24,11 @@ import { bindActionCreators } from 'redux'
 import styles from './Styles/LaunchScreenStyles'
 
 class LaunchScreen extends Component {
+  constructor(props) {
+    super(props);
+    this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1.id !== r2.id });
+  }
+
   _onRemove(id) {
     this.props.removeAnimal(id)
   }
@@ -56,23 +62,28 @@ class LaunchScreen extends Component {
           </Right>
         </Header>
         <Content>
-          <List>
-            {Object.values(this.props.database.animals).map((animal) =>
-              <ListItem key={animal.id} onPress={() => this.props.navigation.navigate('AnimalDetailsScreen', { id: animal.id })}>
-                <Left>
-                  <Text style={styles.sectionText}>
-                    {animal.id}: { animal.name } - { this._birthdateDisplay(animal) }
-                  </Text>
-                </Left>
-
-                <Right>
-                  <Button danger onPress={() => this._onRemove(animal.id)}>
-                    <Icon name='close' />
-                  </Button>
-                </Right>
+          <List
+            leftOpenValue={75}
+            rightOpenValue={-75}
+            dataSource={this.ds.cloneWithRows(Object.values(this.props.database.animals))}
+            renderRow={(data) =>
+              <ListItem key={data.id} onPress={() => this.props.navigation.navigate('AnimalDetailsScreen', { id: data.id })}>
+                <Text>
+                  { data.name } - { this._birthdateDisplay(data) }
+                </Text>
               </ListItem>
-            )}
-          </List>
+            }
+            renderLeftHiddenRow={data =>
+              <Button full info onPress={() => alert(data)}>
+                <Icon active name="information-circle" />
+              </Button>
+            }
+            renderRightHiddenRow={(data) =>
+              <Button full danger onPress={() => this._onRemove(data.id)}>
+                <Icon active name="trash" />
+              </Button>
+            }
+          />
         </Content>
         <Footer>
           <FooterTab>

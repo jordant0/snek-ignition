@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { ListView } from 'react-native';
 import {
   Content,
   Button,
@@ -15,6 +16,11 @@ import { bindActionCreators } from 'redux'
 import styles from './Styles/LaunchScreenStyles'
 
 class EventsListingTab extends Component {
+  constructor(props) {
+    super(props);
+    this.ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1.id !== r2.id });
+  }
+
   _eventsList() {
     return Object.values(this.props.database.events).filter((event) => {
       if(this.props.type) {
@@ -88,18 +94,29 @@ class EventsListingTab extends Component {
     return `${date} - ${details}`
   }
 
+  _onRemoveEvent(eventId) {
+    this.props.removeEvent(eventId)
+  }
+
   render () {
     return (
       <Content>
-        <List>
-          {this._eventsList().map((event) =>
-            <ListItem key={event.id}>
+        <List
+          rightOpenValue={-75}
+          dataSource={this.ds.cloneWithRows(this._eventsList())}
+          renderRow={(data) =>
+            <ListItem key={data.id}>
               <Text>
-                { this._eventDisplay(event) }
+                { this._eventDisplay(data) }
               </Text>
             </ListItem>
-          )}
-        </List>
+          }
+          renderRightHiddenRow={(data) =>
+            <Button full danger onPress={() => this._onRemoveEvent(data.id)}>
+              <Icon active name="trash" />
+            </Button>
+          }
+        />
       </Content>
     )
   }

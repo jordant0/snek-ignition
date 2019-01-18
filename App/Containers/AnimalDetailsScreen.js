@@ -15,6 +15,7 @@ import {
   ActionSheet,
   Tabs,
   Tab,
+  ScrollableTab,
 } from 'native-base'
 import { connect } from 'react-redux'
 import DatabaseActions from '../Redux/DatabaseRedux'
@@ -70,7 +71,7 @@ class AnimalDetailsScreen extends Component {
           <Right />
         </Header>
 
-        <Tabs>
+        <Tabs locked={true} renderTabBar={()=> <ScrollableTab />}>
           <Tab heading='All'>
             <EventsListingTab animalId={ this.state.animalId } />
           </Tab>
@@ -79,6 +80,12 @@ class AnimalDetailsScreen extends Component {
           </Tab>
           <Tab heading='Handling'>
             <EventsListingTab animalId={ this.state.animalId } type='Handling' />
+          </Tab>
+          <Tab heading='Shedding'>
+            <EventsListingTab animalId={ this.state.animalId } type='Shedding' />
+          </Tab>
+          <Tab heading='Other'>
+            <EventsListingTab animalId={ this.state.animalId } type='Other' />
           </Tab>
         </Tabs>
 
