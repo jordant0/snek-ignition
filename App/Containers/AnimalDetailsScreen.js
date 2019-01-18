@@ -45,7 +45,10 @@ class AnimalDetailsScreen extends Component {
 
   _onNewEvent(eventIndex) {
     if(eventIndex !== CANCEL_INDEX) {
-      alert(`Clicked ${BUTTONS[eventIndex]}`);
+      this.props.navigation.navigate('AddEventScreen', {
+        animalId: this.state.animalId,
+        type: BUTTONS[eventIndex],
+      })
     }
   }
 
