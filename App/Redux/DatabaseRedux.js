@@ -87,9 +87,9 @@ function setAnimalData(id, animalData) {
 function setEventData(id, eventData) {
   let newEvent = {
     id: id,
-    name: eventData.name,
+    animalId: eventData.animalId,
     type: eventData.type,
-    species: eventData.species,
+    notes: eventData.notes,
     time: eventData.time,
   }
 

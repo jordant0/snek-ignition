@@ -13,10 +13,13 @@ import {
   Icon,
   Text,
   ActionSheet,
+  Tabs,
+  Tab,
 } from 'native-base'
 import { connect } from 'react-redux'
 import DatabaseActions from '../Redux/DatabaseRedux'
 import { bindActionCreators } from 'redux'
+import EventsListingTab from './EventsListingTab'
 
 // Styles
 import styles from './Styles/LaunchScreenStyles'
@@ -55,7 +58,7 @@ class AnimalDetailsScreen extends Component {
   render () {
     return (
       <Container>
-        <Header>
+        <Header hasTabs>
           <Left>
             <Button transparent onPress={() => this.props.navigation.navigate('LaunchScreen')}>
               <Icon name='arrow-round-back' />
@@ -66,9 +69,19 @@ class AnimalDetailsScreen extends Component {
           </Body>
           <Right />
         </Header>
-        <Content>
-          <Text>{ this.state.animal.type }</Text>
-        </Content>
+
+        <Tabs>
+          <Tab heading='All'>
+            <EventsListingTab animalId={ this.state.animalId } />
+          </Tab>
+          <Tab heading='Feeding'>
+            <EventsListingTab animalId={ this.state.animalId } type='Feeding' />
+          </Tab>
+          <Tab heading='Handling'>
+            <EventsListingTab animalId={ this.state.animalId } type='Handling' />
+          </Tab>
+        </Tabs>
+
         <Footer>
           <FooterTab>
             <Button full active onPress={() =>
